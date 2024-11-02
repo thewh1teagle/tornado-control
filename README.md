@@ -8,7 +8,11 @@ Tested on [ISKA-INV-12 X WIFI EU](https://www.tornado-top.co.il/catalog/product_
 
 ## Usage
 
+1. Copy `.env.template` to `.env` and fill the credentials from your account in [tornadowifi3](https://play.google.com/store/apps/details?id=com.tornado.tornadowifi3). (You must have a password set. you can change it from their settings.)
+2. Install requirements and Run
+
 ```console
+pip install aiohttp python-dotenv
 python main.py
 ```
 
