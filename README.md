@@ -12,7 +12,7 @@ Tested on [ISKA-INV-12 X WIFI EU](https://www.tornado-top.co.il/catalog/product_
 2. Install requirements and Run
 
 ```console
-pip install aiohttp python-dotenv
+pip install -r requirements.txt
 python main.py
 ```
 
