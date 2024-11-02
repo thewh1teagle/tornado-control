@@ -17,16 +17,18 @@ async def main():
 
     # Get specific family
     families = await api.list_families()
-    family = families[1]['familyid']
 
-    # Get specific device
-    devices = await api.list_devices(family)
-    device = devices[1]
-
-    # Turn off
-    params = await api.get_device_params(device)
-    params['pwr'] = 0
-    await api.set_device_params(device, params)
-    
+    for family in families:
+        family_name = family['name']
+        print(f'Family: {family_name}')
+        family_id = family['familyid']
+        devices = await api.list_devices(family_id)
+        for device in devices:
+            device_name = device['friendlyName']
+            print(f"Turn off device: {device_name}")
+            # Turn off device
+            params = await api.get_device_params(device)
+            params['pwr'] = 0
+            await api.set_device_params(device, params)
 
 asyncio.run(main())
