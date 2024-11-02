@@ -1,5 +1,5 @@
 """
-pip install aiohttp python-dotenv
+pip install -r requirements.txt
 python main.py
 """
 
@@ -12,7 +12,11 @@ load_dotenv()
 
 async def main():
     # Login
-    api = AuxCloudAPI(getenv('USER'), getenv('PASSW'), region=getenv('REGION'), session_file=getenv('SESSION_FILE'))
+    user = getenv('TUYA_USERNAME')
+    password = getenv('TUYA_PASSWORD')
+    region = getenv('TUYA_REGION')
+    print(user, password, region)
+    api = AuxCloudAPI(user, password, region=region, session_file=getenv('SESSION_FILE'))
     await api.login()
 
     # Get specific family
@@ -25,9 +29,9 @@ async def main():
         devices = await api.list_devices(family_id)
         for device in devices:
             device_name = device['friendlyName']
-            print(f"Turn off device: {device_name}")
-            # Turn off device
             params = await api.get_device_params(device)
+            # Turn off device
+            print(f"Turn off device: {device_name}")
             params['pwr'] = 0
             await api.set_device_params(device, params)
 
