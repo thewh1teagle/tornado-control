@@ -8,7 +8,6 @@ from typing import TypedDict
 from io import BytesIO
 from pathlib import Path
 from .util import encrypt_aes_cbc_zero_padding
-from .const import AUX_MODELS
 
 TIMESTAMP_TOKEN_ENCRYPT_KEY = 'kdixkdqp54545^#*'
 PASSWORD_ENCRYPT_KEY = '4969fj#k23#'
@@ -186,20 +185,9 @@ class AuxCloudAPI:
             dev_state = await self.query_device_state(dev['endpointId'], dev['devSession'])
             dev['state'] = dev_state['data'][0]['state']
 
-            # Fetch known params of the device
-            if dev['productId'] in AUX_MODELS and dev['state'] == 1:
-              dev_params = await self.get_device_params(dev, params=list(AUX_MODELS[dev['productId']]['params'].keys()))
-              dev['params'] = dev_params
-
-              # Fetch additional params not returned with the default query
-              if len(AUX_MODELS[dev['productId']]['special_params']) != 0:
-                dev_special_params = await self.get_device_params(dev, params=list(AUX_MODELS[dev['productId']]['special_params'].keys()))
-                dev['params'] = {**dev['params'], **dev_special_params}
-
             # Fetch params from unknown device
-            elif dev['state'] == 1:
-              dev_params = await self.get_device_params(dev)
-              dev['params'] = dev_params
+            dev_params = await self.get_device_params(dev)
+            dev['params'] = dev_params
 
             if not any(d['endpointId'] == dev['endpointId'] for d in self.data[familyid]['devices']):
               self.data[familyid]['devices'].append(dev)

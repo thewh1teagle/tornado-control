@@ -15,7 +15,6 @@ async def main():
     user = getenv('TUYA_USERNAME')
     password = getenv('TUYA_PASSWORD')
     region = getenv('TUYA_REGION')
-    print(user, password, region)
     api = AuxCloudAPI(user, password, region=region, session_file=getenv('SESSION_FILE'))
     await api.login()
 
@@ -26,13 +25,20 @@ async def main():
         family_name = family['name']
         print(f'Family: {family_name}')
         family_id = family['familyid']
-        devices = await api.list_devices(family_id)
+        try:
+            devices = await api.list_devices(family_id)
+        except Exception as e:
+            print(f'Failed to query family {family_name}', e)
+            continue
         for device in devices:
             device_name = device['friendlyName']
-            params = await api.get_device_params(device)
-            # Turn off device
-            print(f"Turn off device: {device_name}")
-            params['pwr'] = 0
-            await api.set_device_params(device, params)
+            try:
+                params = await api.get_device_params(device)
+                # Turn off device
+                print(f"Turn off device: {device_name}")
+                params['pwr'] = 0
+                await api.set_device_params(device, params)
+            except Exception as e:
+                print(f'Failed to turn off device {device_name}')
 
 asyncio.run(main())
