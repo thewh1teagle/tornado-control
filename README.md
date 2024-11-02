@@ -2,7 +2,7 @@
 
 Control tornado air conditioner
 
-Based on [maeek's](https://github.com/maeek) great RE work!
+Based on [maeek's](https://github.com/maeek) great RE work in [ha-aux-cloud](https://github.com/maeek/ha-aux-cloud)!
 
 Tested on [ISKA-INV-12 X WIFI EU](https://www.tornado-top.co.il/catalog/product_page?productid=398)
 
